@@ -41,3 +41,13 @@ và từng được sử dụng trong nghiên cứu về Mạng Nơ-ron Tích Ch
 - Dữ liệu được lưu dưới dạng .csv và bao gồm 4 cột: Class Index (cột label), Question Title, Question Content, Best Answer. 
 
 ![Data Topic](data_topic.png)
+
+### Thí nghiệm
+
+#### Mô hình BERT
+
+#### Công tác tinh chỉnh (Fine-tune) BERT
+
+#### Các tham số huấn luyện, chia dữ liệu
+
+### Kết quả
