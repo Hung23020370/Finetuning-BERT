@@ -1,16 +1,26 @@
 import streamlit as st
 import torch
 import time
-from transformers import AutoTokenizer, BertConfig, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, BertForSequenceClassification
 
+# Đường dẫn đến mô hình fine-tuned
+model_path_sentiment = "model_sentiment_analysis"
+model_path_topic = "model_topic classification/best_model.bin"
+
+# Tự động chọn thiết bị GPU nếu có, ngược lại dùng CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model_path_sentiment = "model_sentiment_analysis"
+# Load tokenizer và config
 tokenizer_sentiment = AutoTokenizer.from_pretrained(model_path_sentiment)
-config_sentiment = BertConfig.from_pretrained(model_path_sentiment, num_labels=2)
-model_sentiment = AutoModelForSequenceClassification.from_pretrained(model_path_sentiment, config=config_sentiment)
-model_sentiment.to(device)
-model_sentiment.eval()  
+tokenizer_topic = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+# Load mô hình từ 
+model_sentiment = AutoModelForSequenceClassification.from_pretrained(model_path_sentiment)
+model_topic = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=10)
+model_topic.load_state_dict(torch.load(model_path_topic, map_location=torch.device('cpu'), weights_only=False))
+
+model_sentiment.eval()
+model_topic.eval()
 
 # Dự đoán cảm xúc Amazon
 def predict_amazon_sentiment(text):
@@ -32,16 +42,19 @@ def predict_amazon_sentiment(text):
     
     input_ids, attention_mask = preprocess_text(text, tokenizer_sentiment)
 
+    # Đưa input về đúng device
     input_ids = input_ids.to(device)
-    attention_mask = attention_mask.to(device)
-
+    attention_mask = attention_mask.to(device) 
+       
     with torch.no_grad():
         outputs = model_sentiment(input_ids=input_ids, attention_mask=attention_mask)
         probs = torch.nn.functional.softmax(outputs.logits, dim=1)
         predicted_class = torch.argmax(probs, dim=1).item()
         confidence = probs[0][predicted_class].item()
 
-    sentiment = "Tiêu cực" if predicted_class == 0 else "Tích cực"
+    sentiment = "Tiêu cực"
+    if predicted_class == 1:
+        sentiment = "Tích cực"
 
     return sentiment, confidence
 
@@ -53,26 +66,46 @@ def predict_yahoo_topic(text):
 
     time.sleep(2)  # Giả lập delay API
 
-    topics = {
-        "Công nghệ": ["computer", "software", "tech", "programming", "code", "app", "website"],
-        "Sức khỏe": ["health", "medical", "doctor", "medicine", "sick", "disease", "treatment"],
-        "Giáo dục": ["school", "study", "learn", "education", "student", "teacher", "university"],
-        "Thể thao": ["sport", "game", "team", "player", "match", "football", "basketball"],
-        "Giải trí": ["movie", "music", "show", "actor", "singer", "entertainment", "celebrity"],
-        "Kinh doanh": ["business", "money", "work", "job", "company", "finance", "investment"],
-    }
+    def preprocess_text(text, tokenizer, max_len=512):
+        encoding = tokenizer.encode_plus(
+            text,
+            add_special_tokens=True,
+            max_length=max_len,
+            padding='max_length',
+            truncation=True,
+            return_tensors='pt'
+        )
+        return encoding['input_ids'], encoding['attention_mask']
+    
+    input_ids, attention_mask = preprocess_text(text, tokenizer_sentiment)
+    
+    # Đưa input về đúng device
+    input_ids = input_ids.to(torch.device('cpu'))
+    attention_mask = attention_mask.to(torch.device('cpu'))
 
-    text_lower = text.lower()
-    best_topic = "Tổng quát"
-    max_score = 0
+       
+    with torch.no_grad():
+        outputs = model_sentiment(input_ids=input_ids, attention_mask=attention_mask)
+        probs = torch.nn.functional.softmax(outputs.logits, dim=1)
+        predicted_class = torch.argmax(probs, dim=1).item()
+        confidence = probs[0][predicted_class].item()
 
-    for topic, keywords in topics.items():
-        score = sum(word in text_lower for word in keywords)
-        if score > max_score:
-            max_score = score
-            best_topic = topic
+    best_topic = ""
 
-    confidence = min(0.95, 0.5 + max_score * 0.15) if max_score > 0 else 0.4
+    class_labels = [
+    "Society & Culture",
+    "Science & Mathematics",
+    "Health",
+    "Education & Reference",
+    "Computers & Internet",
+    "Sports",
+    "Business & Finance",
+    "Entertainment & Music",
+    "Family & Relationships",
+    "Politics & Government"
+    ]   
+
+    best_topic = class_labels[predicted_class]
 
     return best_topic, confidence
 
@@ -86,7 +119,7 @@ tab1, tab2 = st.tabs(["📦 Cảm xúc", "🏷️ Chủ đề"])
 
 with tab1:
     st.markdown("Nhập văn bản mà bạn muốn phân tích cảm xúc (Tích cực / Trung tính).")
-    amazon_input = st.text_area("✍️ Nhập văn bản", height=150)
+    amazon_input = st.text_area("✍️ Nhập văn bản", height=150, key="amazon_input")
 
     if st.button("📊 Phân tích Cảm xúc", key="amazon"):
         with st.spinner("Đang phân tích..."):
@@ -98,7 +131,7 @@ with tab1:
 
 with tab2:
     st.markdown("Nhập văn bản mà bạn muốn phân loại chủ đề (Công nghệ, Sức khỏe, ...).")
-    yahoo_input = st.text_area("✍️ Nhập văn bản", height=150)
+    yahoo_input = st.text_area("✍️ Nhập văn bản", height=150, key="yahoo_input")
 
     if st.button("📚 Phân loại Chủ đề", key="yahoo"):
         with st.spinner("Đang phân loại..."):
@@ -110,3 +143,5 @@ with tab2:
 
 st.markdown("---")
 st.caption("💡 Đây là bản demo của ứng dụng.")
+
+ 
