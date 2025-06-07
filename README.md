@@ -31,7 +31,7 @@ và từng được sử dụng trong nghiên cứu về Mạng Nơ-ron Tích Ch
 - Mỗi label sẽ có 1.8 triệu mẫu huấn luyện và 200,000 mẫu kiểm tra tương ứng. 
 - Dữ liệu được lưu dưới dạng .csv và bao gồm 3 cột: Class Index (cột label), Review Title, Review Text.
 
-![Data Sentiment](/Users/huydoan/Documents/GitHub/Finetuning-BERT/data_sentiment.png)
+![Data Sentiment](data_sentiment.png)
 
 #### Yahoo Answers
 
@@ -40,4 +40,4 @@ và từng được sử dụng trong nghiên cứu về Mạng Nơ-ron Tích Ch
 - Dữ liệu về câu trả lời: Chỉ lấy những câu trả lời hay nhất và bám sát với chủ đề. 
 - Dữ liệu được lưu dưới dạng .csv và bao gồm 4 cột: Class Index (cột label), Question Title, Question Content, Best Answer. 
 
-![Data Topic](/Users/huydoan/Documents/GitHub/Finetuning-BERT/data_topic.png)
+![Data Topic](data_topic.png)
