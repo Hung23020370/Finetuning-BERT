@@ -4,17 +4,17 @@ import subprocess
 
 def run_pretraining():
     print("\n Running Pre-training...")
-    subprocess.run(["python", "pre-training.py"])
+    subprocess.run(["python", "scripts/pretrain_model.py"])
 
 
 def run_finetune_sentiment():
     print("\n Running Fine-tuning for Sentiment Analysis...")
-    subprocess.run(["python", "fine-tuning_sentiment_analysis.py"])
+    subprocess.run(["python", "scripts/finetune_sentiment_analysis.py"])
 
 
 def run_finetune_topic():
     print("\n Running Fine-tuning for Topic Classification...")
-    subprocess.run(["python", "fine-tuning_topic_classification.py"])
+    subprocess.run(["python", "scripts/finetune_topic_classification.py"])
 
 
 def main():
