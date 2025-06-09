@@ -41,13 +41,20 @@ và từng được sử dụng trong nghiên cứu về Mạng Nơ-ron Tích Ch
 - Dữ liệu được lưu dưới dạng .csv và bao gồm 4 cột: Class Index (cột label), Question Title, Question Content, Best Answer. 
 
 ![Data Topic](figures/data_topic.png)
+### Cách cài đặt và chạy ứng dụng demo
 
-### Thí nghiệm
-
-#### Mô hình BERT
-
-#### Công tác tinh chỉnh (Fine-tune) BERT
-
-#### Các tham số huấn luyện, chia dữ liệu
-
-### Kết quả
+1. **Cài đặt thư viện cần thiết**  
+- Mở terminal và chạy:
+```bash
+pip install torch streamlit transformers
+```
+2. **Chạy ứng dụng** 
+- Mở terminal
+- Di chuyển đến thư mục chứa mã nguồn, ví dụ nếu thư mục ở ổ C, trong folder Finetuning-BERT:
+```bash
+cd C:\Finetuning-BERT
+```
+- Chạy ứng dụng:
+```bash
+streamlit run demo.py
+```
