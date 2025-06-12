@@ -15,7 +15,7 @@ config = BertConfig.from_pretrained(model_pre_path, num_labels=2)
 model = BertForSequenceClassification.from_pretrained(model_pre_path, config=config)
 
 # Load and process dataset
-data = pd.read_csv("data/sentiment_analysis.csv")
+data = pd.read_csv("data/amazo_ review_polarity/sentiment_analysis.csv")
 texts = data['content'].tolist()
 labels = [l - 1 for l in data['label'].tolist()]  # Convert labels to 0-based
 
