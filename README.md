@@ -22,10 +22,10 @@ và trong công tác dự đoán chủ đề của một câu hỏi trên diễn
 
 ### Dữ liệu
 
-Dữ liệu được thu thập và xây dựng bởi Xiang Zhang,
-và từng được sử dụng trong nghiên cứu về Mạng Nơ-ron Tích Chập Cấp Độ Ký Tự cho Phân Loại Văn Bản, 
-được công bố ở Hội thảo về Các hệ thống Nơ-ron xử lý thông tin (NIPS) năm 2015. 
+Trong nghiên cứu này, chúng tôi thực hiện hai nhiệm vụ chính. Đầu tiên, chúng tôi tiền huấn luyện mô hình ngôn ngữ trên tập dữ liệu Wikipedia tiếng Anh để học các biểu diễn ngữ nghĩa tổng quát. Sau đó, chúng tôi áp dụng phương pháp fine-tuning dựa trên mô hình đã tiền huấn luyện cho hai tác vụ cụ thể: phân tích cảm xúc và phân loại chủ đề văn bản.Tập dữ liệu dùng cho tác vụ phân loại chủ đề được xây dựng dựa trên tập dữ liệu Yahoo Answers do Xiang Zhang và cộng sự phát triển, từng được sử dụng trong nghiên cứu về Character-level Convolutional Networks for Text Classification, công bố tại Hội thảo về Hệ thống xử lý thông tin thần kinh (Neural Information Processing Systems - NIPS) năm 2015 .
 
+#### Wikipedia
+- Dữ liệu tiền huấn luyện được sử dụng trong nghiên cứu này là tập Wikipedia tiếng Anh phiên bản tháng 3 năm 2022, được cung cấp thông qua nền tảng Hugging Face tại địa chỉ \url{https://huggingface.co/datasets/wikipedia}. Đây là bản trích xuất đã được xử lý trước, bao gồm nội dung văn bản thuần từ các bài viết trên Wikipedia, loại bỏ các thẻ đánh dấu định dạng, hình ảnh, và siêu liên kết, giúp thuận tiện cho việc sử dụng trong huấn luyện mô hình ngôn ngữ. Tập dữ liệu này bao gồm hàng triệu bài viết với độ dài và chủ đề phong phú, phản ánh đa dạng các lĩnh vực từ khoa học, công nghệ đến văn hóa và xã hội.
 #### Amazon Review Polarity
 
 - Dữ liệu được xây dựng bằng việc lấy các đánh giá 1 sao và 2 sao là tiêu cực (label 1), 4 sao và 5 sao là tích cực (label 2). Các đánh giá 3 sao được lược bỏ. 
