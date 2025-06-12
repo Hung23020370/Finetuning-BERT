@@ -7,6 +7,7 @@
 
 ### Phân công nhiệm vụ
 - Slide tham khảo: [BERT Finetuning](https://www.figma.com/slides/HVqfuP4ZpmdZO6IBifh2uc/Data-Science-Project---Recipe-Site-Traffic?node-id=1-305&t=kwlcwnsjv97iZGLf-1).
+- Báo cáo: [Báo cáo](docs/report/Báo%20cáo.pdf)
 - Code về hai phần liên quan đến BERT: Đồng Mạnh Hùng, Nguyễn Đình Khải.
 - Tìm hiểu, thu thập và phân tích dữ liệu: Đoàn Quang Huy. 
 
